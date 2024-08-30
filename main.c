@@ -1,3 +1,8 @@
+// Arthur Pinheiro de Brito sala 3B. (INICIO 28/09 FIM 30/09.)
+// Commit inicial realizado às 18h do dia 28. 
+// Comecei a primeira questão logo após a aula do dia 29, cerca das 13h e a terminei às 19h do mesmo dia.
+// NO dia 30, iniciei a questão 2 as 8h e a terminei ás 13h, fiz o commit e logo começei a questão 3. Acabei-a, finalizando o código às 20h.
+
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
