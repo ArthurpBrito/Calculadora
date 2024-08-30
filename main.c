@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <math.h>
+#include <string.h>
 
 void binario(int n) {
     printf("Convertendo %d para binario:\n", n);
@@ -124,13 +126,71 @@ void complementoDois(int n) {
     printf("\n");
 }
 
+void printBits(size_t size, void* ptr) {
+    unsigned char* b = (unsigned char*) ptr;
+    unsigned char byte;
+    int i, j;
+    for (i = size - 1; i >= 0; i--) {
+        for (j = 7; j >= 0; j--) {
+            byte = (b[i] >> j) & 1;
+            printf("%u", byte);
+        }
+    }
+}
+
+void printFloatBits(float f) {
+    printf("Float:\n");
+
+    unsigned int bits;
+    memcpy(&bits, &f, sizeof(bits));
+
+    unsigned int sinal = (bits >> 31) & 1;
+    unsigned int expoente = (bits >> 23) & 0xFF;
+    unsigned int fracao = bits & 0x7FFFFF;
+
+    int expoenteComVies = expoente - 127;
+
+    printf("  Sinal: %u\n", sinal);
+    printf("  Expoente: ");
+    printBits(sizeof(expoente), &expoente);
+    printf(" (valor: %u)\n", expoente);
+    printf("  Expoente com Vies (127): %d\n", expoenteComVies);
+    printf("  Fracao: ");
+    printBits(sizeof(fracao), &fracao);
+    printf("\n\n");
+}
+
+void printDoubleBits(double d) {
+    printf("Double:\n");
+
+    unsigned long long bits;
+    memcpy(&bits, &d, sizeof(bits));
+
+    unsigned int sinal = (bits >> 63) & 1;
+    unsigned int expoente = (bits >> 52) & 0x7FF;
+    unsigned long long fracao = bits & 0xFFFFFFFFFFFFF;
+
+    int expoenteComVies = expoente - 1023;
+
+    printf("  Sinal: %u\n", sinal);
+    printf("  Expoente: ");
+    printBits(sizeof(expoente), &expoente);
+    printf(" (valor: %u)\n", expoente);
+    printf("  Expoente com Vies (1023): %d\n", expoenteComVies);
+    printf("  Fracao: ");
+    printBits(sizeof(fracao), &fracao);
+    printf("\n\n");
+}
+
 int main() {
     int num;
     int opcao;
+    double realNum;
 
     printf("Escolha uma opcao:\n");
     printf("1. Converter de base 10 para base 2, base 8, base 16 e BCD\n");
     printf("2. Converter de base 10 para base com sinal (complemento a 2) com 16 bits\n");
+    printf("3. Converter de numero real para float e double\n");
     printf("Digite a sua opcao: ");
     scanf("%d", &opcao);
 
@@ -147,6 +207,12 @@ int main() {
         scanf("%d", &num);
         printf("\n");
         complementoDois(num);
+    } else if (opcao == 3) {
+        printf("Digite um numero real decimal: ");
+        scanf("%lf", &realNum);
+        printf("\n");
+        printFloatBits((float)realNum);
+        printDoubleBits(realNum);
     } else {
         printf("Opcao invalida!\n");
     }
